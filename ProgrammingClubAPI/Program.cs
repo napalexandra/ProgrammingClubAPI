@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProgrammingClubAPI.DataContext;
+using ProgrammingClubAPI.Repositories;
+using ProgrammingClubAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,11 @@ builder.Services.AddSwaggerGen();
 //inregistram clasa ProgrammingClubDataContext in containerul de dependente 
 builder.Services.AddDbContext<ProgrammingClubDataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//Transient = de fiecare data cand se cere o instanta a clasei, se va crea una noua
+//Scoped = se va crea o instanta a clasei pentru fiecare request HTTP
+builder.Services.AddTransient<IMembersRepository, MembersRepository>();
+builder.Services.AddTransient<IMembersService, MembersService>();
 
 var app = builder.Build();
 

@@ -1,12 +1,19 @@
-﻿using ProgrammingClubAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ProgrammingClubAPI.DataContext;
+using ProgrammingClubAPI.Models;
 
 namespace ProgrammingClubAPI.Repositories
 {
     public class MembersRepository : IMembersRepository
     {
-        public Task<IEnumerable<Member>> GetAllMembersAsync()
+        private readonly ProgrammingClubDataContext _context;
+        public MembersRepository(ProgrammingClubDataContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<IEnumerable<Member>> GetAllMembersAsync()
+        {
+            return await _context.Members.ToListAsync();
         }
 
         public Task<Member> GetMemberByIdAsync(Guid id)
