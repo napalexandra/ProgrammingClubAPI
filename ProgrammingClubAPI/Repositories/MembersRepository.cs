@@ -14,12 +14,23 @@ namespace ProgrammingClubAPI.Repositories
         public async Task<IEnumerable<Member>> GetAllMembersAsync()
         {
 
-             return await _context.Members.ToListAsync();
+            return await _context.Members.ToListAsync();
         }
 
         public async Task<Member> GetMemberByIdAsync(Guid id)
         {
             return await _context.Members.FirstOrDefaultAsync(m => m.IdMember == id);
+        }
+
+        public async Task AddMemberAsync(Member member)
+        {
+            _context.Entry(member).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> UsernameExistsAsync(string username)
+        {
+            return await _context.Members.AnyAsync(m => m.Username == username);
         }
     }
 }

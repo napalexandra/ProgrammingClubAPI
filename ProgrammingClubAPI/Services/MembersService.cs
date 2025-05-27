@@ -20,5 +20,15 @@ namespace ProgrammingClubAPI.Services
         {
              return await _membersRepository.GetMemberByIdAsync(id);
         }
+
+        public async Task AddMemberAsync(Member member)
+        {
+            if(await _membersRepository.UsernameExistsAsync(member.Username))
+            {
+                throw new ArgumentException("Username already exists.", nameof(member.Username));
+            }
+            member.IdMember = Guid.NewGuid();
+            await _membersRepository.AddMemberAsync(member);
+        }
     }
 }

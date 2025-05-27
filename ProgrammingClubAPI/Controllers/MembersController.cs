@@ -27,7 +27,7 @@ namespace ProgrammingClubAPI.Controllers
                 var members = await _membersService.GetAllMembersAsync();
                 if (members.Count() <= 0)
                 {
-                   //return NotFound("No members found.");
+                    //return NotFound("No members found.");
                     return StatusCode((int)HttpStatusCode.OK, ErrorMessagesEnum.NoMembersFound);
                 }
                 return Ok(members);
@@ -42,14 +42,14 @@ namespace ProgrammingClubAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-         try
+            try
             {
                 Member member = await _membersService.GetMemberByIdAsync(id);
-                if(member!=null)
+                if (member != null)
                     return StatusCode((int)HttpStatusCode.OK, member);
                 return StatusCode((int)HttpStatusCode.NotFound, ErrorMessagesEnum.MemberNotFound);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
@@ -57,8 +57,22 @@ namespace ProgrammingClubAPI.Controllers
 
         // POST api/<MembersController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] Member member)
         {
+            try
+            {
+                if (member != null)
+                {
+                    await _membersService.AddMemberAsync(member);
+                    return StatusCode((int)HttpStatusCode.Created, SuccessMessagesEnum.MemberAdded);
+                }
+                return StatusCode((int)HttpStatusCode.BadRequest, ErrorMessagesEnum.InvalidData);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+
+            }
         }
 
         // PUT api/<MembersController>/5

@@ -9,10 +9,13 @@ namespace ProgrammingClubAPI.Repositories
 
         //Task<Member> GetMemberByUsernameAsync(string username);
 
-        //Task AddMemberAsync(Member member);
+        Task AddMemberAsync(Member member);
+
+        Task<bool> UsernameExistsAsync(string username);
+
         //Task UpdateMemberAsync(Member member);
         //Task DeleteMemberAsync(Guid id);
         //Task<bool> MemberExistsAsync(Guid id);
-        //Task<bool> UsernameExistsAsync(string username);
+        //
     }
 }

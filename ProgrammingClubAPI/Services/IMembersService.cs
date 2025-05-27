@@ -6,5 +6,7 @@ namespace ProgrammingClubAPI.Services
     {
         Task<IEnumerable<Member>> GetAllMembersAsync(); 
         Task<Member> GetMemberByIdAsync(Guid id);
+
+        Task AddMemberAsync(Member member);
     }
 }
