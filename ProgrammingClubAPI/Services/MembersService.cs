@@ -15,5 +15,10 @@ namespace ProgrammingClubAPI.Services
         {
             return await _membersRepository.GetAllMembersAsync();
         }
+
+        public async Task<Member> GetMemberByIdAsync(Guid id)
+        {
+             return await _membersRepository.GetMemberByIdAsync(id);
+        }
     }
 }

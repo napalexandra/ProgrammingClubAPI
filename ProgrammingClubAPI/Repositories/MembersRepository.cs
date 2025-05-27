@@ -17,9 +17,9 @@ namespace ProgrammingClubAPI.Repositories
              return await _context.Members.ToListAsync();
         }
 
-        public Task<Member> GetMemberByIdAsync(Guid id)
+        public async Task<Member> GetMemberByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Members.FirstOrDefaultAsync(m => m.IdMember == id);
         }
     }
 }

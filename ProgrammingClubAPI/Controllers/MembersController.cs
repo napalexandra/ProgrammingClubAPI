@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingClubAPI.Helpers;
+using ProgrammingClubAPI.Models;
 using ProgrammingClubAPI.Services;
 using System.Net;
 
@@ -39,9 +40,19 @@ namespace ProgrammingClubAPI.Controllers
 
         // GET api/<MembersController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            return "value";
+         try
+            {
+                Member member = await _membersService.GetMemberByIdAsync(id);
+                if(member!=null)
+                    return StatusCode((int)HttpStatusCode.OK, member);
+                return StatusCode((int)HttpStatusCode.NotFound, ErrorMessagesEnum.MemberNotFound);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // POST api/<MembersController>

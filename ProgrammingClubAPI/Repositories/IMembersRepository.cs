@@ -6,7 +6,9 @@ namespace ProgrammingClubAPI.Repositories
     {
         Task<IEnumerable<Member>> GetAllMembersAsync();
         Task<Member> GetMemberByIdAsync(Guid id);
+
         //Task<Member> GetMemberByUsernameAsync(string username);
+
         //Task AddMemberAsync(Member member);
         //Task UpdateMemberAsync(Member member);
         //Task DeleteMemberAsync(Guid id);
