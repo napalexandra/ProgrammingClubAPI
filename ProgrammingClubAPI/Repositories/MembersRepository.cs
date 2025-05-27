@@ -13,7 +13,8 @@ namespace ProgrammingClubAPI.Repositories
         }
         public async Task<IEnumerable<Member>> GetAllMembersAsync()
         {
-            return await _context.Members.ToListAsync();
+
+             return await _context.Members.ToListAsync();
         }
 
         public Task<Member> GetMemberByIdAsync(Guid id)

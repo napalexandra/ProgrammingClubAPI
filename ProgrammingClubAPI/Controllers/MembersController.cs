@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProgrammingClubAPI.Helpers;
 using ProgrammingClubAPI.Services;
+using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,11 +21,13 @@ namespace ProgrammingClubAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try { 
+            try
+            {
                 var members = await _membersService.GetAllMembersAsync();
-                if (members == null || !members.Any())
+                if (members.Count() <= 0)
                 {
-                    return NotFound("No members found.");
+                   //return NotFound("No members found.");
+                    return StatusCode((int)HttpStatusCode.OK, ErrorMessagesEnum.NoMembersFound);
                 }
                 return Ok(members);
             }
