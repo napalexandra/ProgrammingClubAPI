@@ -13,9 +13,12 @@ namespace ProgrammingClubAPI.Repositories
 
         Task<bool> UsernameExistsAsync(string username);
 
-        //Task UpdateMemberAsync(Member member);
-        //Task DeleteMemberAsync(Guid id);
-        //Task<bool> MemberExistsAsync(Guid id);
-        //
+        Task<Member> UpdateMemberAsync(Member member);
+
+        Task<Member> UpdateMemberPartiallyAsync(Member member);
+
+        Task<bool> MemberExistsAsync(Guid id);
+
+        Task<bool> DeleteMemberAsync(Guid id);
     }
 }

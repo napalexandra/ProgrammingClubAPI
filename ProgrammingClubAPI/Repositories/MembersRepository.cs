@@ -32,5 +32,58 @@ namespace ProgrammingClubAPI.Repositories
         {
             return await _context.Members.AnyAsync(m => m.Username == username);
         }
+
+        public async Task<Member> UpdateMemberAsync(Member member)
+        {
+            _context.Update(member);
+            await _context.SaveChangesAsync();
+            return member;
+        }
+
+        public async Task<bool> MemberExistsAsync(Guid id)
+        {
+            return await _context.Members.AnyAsync(m => m.IdMember == id);
+        }
+
+        public async Task<Member> UpdateMemberPartiallyAsync(Member member)
+        {
+            Member memberFromDb = await GetMemberByIdAsync(member.IdMember);
+
+            if (memberFromDb == null)
+            {
+                return null;
+            }
+
+            UpdateIfNullOrEmpty(member.Username, value => memberFromDb.Username = value);
+            UpdateIfNullOrEmpty(member.Password, value => memberFromDb.Password = value);
+            UpdateIfNullOrEmpty(member.Name, value => memberFromDb.Name = value);
+            UpdateIfNullOrEmpty(member.Title, value => memberFromDb.Title = value);
+            UpdateIfNullOrEmpty(member.Description, value => memberFromDb.Description = value);
+            UpdateIfNullOrEmpty(member.Resume, value => memberFromDb.Resume = value);
+
+            _context.Update(memberFromDb);
+            await _context.SaveChangesAsync();
+            return memberFromDb;
+        }
+
+        public async Task<bool> DeleteMemberAsync(Guid id)
+        {
+            if (!await MemberExistsAsync(id))
+            {
+                return false;
+            }
+
+            _context.Members.Remove(new Member { IdMember = id });
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        private void UpdateIfNullOrEmpty(string newValue, Action<string> setter)
+        {
+            if (!string.IsNullOrEmpty(newValue))
+            {
+                setter(newValue);
+            }
+        }
     }
 }

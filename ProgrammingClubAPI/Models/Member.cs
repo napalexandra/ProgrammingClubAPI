@@ -1,11 +1,13 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ProgrammingClubAPI.Models
 {
     public class Member
     {
         [Key]
+        [JsonIgnore]
         public Guid IdMember { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }

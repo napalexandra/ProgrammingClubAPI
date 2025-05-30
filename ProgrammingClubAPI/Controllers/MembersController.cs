@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingClubAPI.Helpers;
 using ProgrammingClubAPI.Models;
+using ProgrammingClubAPI.Models.CreateOrUpdateModels;
 using ProgrammingClubAPI.Services;
 using System.Net;
 
@@ -77,14 +78,65 @@ namespace ProgrammingClubAPI.Controllers
 
         // PUT api/<MembersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(Guid id, [FromBody] Member member)
         {
+            try
+            {
+                if (member == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, ErrorMessagesEnum.InvalidData);
+                }
+                var updatedMember = await _membersService.UpdateMemberAsync(id, member);
+
+                if (updatedMember != null)
+                {
+                    return StatusCode((int)HttpStatusCode.OK, SuccessMessagesEnum.MemberUpdated);
+                }
+
+                return StatusCode((int)HttpStatusCode.NotFound, ErrorMessagesEnum.MemberNotFound);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchMember(Guid id, [FromBody] UpdateMemberPartially member)
+        {
+            try
+            {
+                if (member == null)
+                {
+                    return StatusCode((int)HttpStatusCode.BadRequest, ErrorMessagesEnum.InvalidData);
+                }
+                Member updatedMember = await _membersService.UpdateMemberPartiallyAsync(id, member);
+                if (updatedMember != null)
+                {
+                    return StatusCode((int)HttpStatusCode.OK, SuccessMessagesEnum.MemberUpdated);
+                }
+                return StatusCode((int)HttpStatusCode.NotFound, ErrorMessagesEnum.MemberNotFound);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
 
         // DELETE api/<MembersController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
+            try
+            {
+                var result = await _membersService.DeleteMemberAsync(id);
+                return StatusCode((int)HttpStatusCode.OK, SuccessMessagesEnum.MemberRemoved);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }
