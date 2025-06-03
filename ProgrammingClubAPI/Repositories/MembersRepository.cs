@@ -24,8 +24,11 @@ namespace ProgrammingClubAPI.Repositories
 
         public async Task AddMemberAsync(Member member)
         {
-            _context.Entry(member).State = EntityState.Added;
-            await _context.SaveChangesAsync();
+            if (member.IdMember != Guid.Empty)
+            {
+                _context.Entry(member).State = EntityState.Added;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<bool> UsernameExistsAsync(string username)
@@ -35,9 +38,13 @@ namespace ProgrammingClubAPI.Repositories
 
         public async Task<Member> UpdateMemberAsync(Member member)
         {
-            _context.Update(member);
-            await _context.SaveChangesAsync();
-            return member;
+            if (member.IdMember != Guid.Empty)
+            {
+                _context.Update(member);
+                await _context.SaveChangesAsync();
+                       return member;
+            }
+            return null;
         }
 
         public async Task<bool> MemberExistsAsync(Guid id)
