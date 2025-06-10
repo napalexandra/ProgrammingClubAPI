@@ -16,6 +16,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProgrammingClubDataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<ProgrammingClubAuthDataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionAuth")));
+
 //Transient = de fiecare data cand se cere o instanta a clasei, se va crea una noua
 //Scoped = se va crea o instanta a clasei pentru fiecare request HTTP
 builder.Services.AddTransient<IMembersRepository, MembersRepository>();
@@ -36,6 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

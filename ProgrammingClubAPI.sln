@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingClubAPI", "Progr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingClubAPI.UnitTests", "ProgrammingClubAPI.UnitTests\ProgrammingClubAPI.UnitTests.csproj", "{8D9CA035-1678-465D-9C15-2B72865DB91A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingClubAPI.SpecsTests", "ProgrammingClubAPI.SpecsTests\ProgrammingClubAPI.SpecsTests.csproj", "{D5E477A8-9400-4292-A7B1-497216075002}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8D9CA035-1678-465D-9C15-2B72865DB91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D9CA035-1678-465D-9C15-2B72865DB91A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D9CA035-1678-465D-9C15-2B72865DB91A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5E477A8-9400-4292-A7B1-497216075002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5E477A8-9400-4292-A7B1-497216075002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5E477A8-9400-4292-A7B1-497216075002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5E477A8-9400-4292-A7B1-497216075002}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -38,11 +38,11 @@ namespace ProgrammingClubAPI.Repositories
 
         public async Task<Member> UpdateMemberAsync(Member member)
         {
-            if (member.IdMember != Guid.Empty)
+            if (member.IdMember != Guid.Empty && await MemberExistsAsync(member.IdMember))
             {
                 _context.Update(member);
                 await _context.SaveChangesAsync();
-                       return member;
+                return member;
             }
             return null;
         }
