@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProgrammingClubAPI.Helpers;
 using ProgrammingClubAPI.Models;
 using ProgrammingClubAPI.Models.CreateOrUpdateModels;
@@ -11,6 +12,7 @@ namespace ProgrammingClubAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+  
     public class MembersController : ControllerBase
     {
         private readonly IMembersService _membersService;
@@ -21,6 +23,7 @@ namespace ProgrammingClubAPI.Controllers
 
         // GET: api/<MembersController>
         [HttpGet]
+        [Authorize(Roles = "Admin,Member")]
         public async Task<IActionResult> Get()
         {
             try
@@ -41,6 +44,7 @@ namespace ProgrammingClubAPI.Controllers
 
         // GET api/<MembersController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Member")]
         public async Task<IActionResult> Get(Guid id)
         {
             try
@@ -58,6 +62,7 @@ namespace ProgrammingClubAPI.Controllers
 
         // POST api/<MembersController>
         [HttpPost]
+        [Authorize(Roles = "Admin,Member")]
         public async Task<IActionResult> Post([FromBody] Member member)
         {
             try
@@ -78,6 +83,7 @@ namespace ProgrammingClubAPI.Controllers
 
         // PUT api/<MembersController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Member member)
         {
             try
@@ -102,6 +108,7 @@ namespace ProgrammingClubAPI.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PatchMember(Guid id, [FromBody] UpdateMemberPartially member)
         {
             try
@@ -126,6 +133,7 @@ namespace ProgrammingClubAPI.Controllers
 
         // DELETE api/<MembersController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
