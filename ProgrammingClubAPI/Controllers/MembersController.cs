@@ -10,9 +10,10 @@ using System.Net;
 
 namespace ProgrammingClubAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-  
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class MembersController : ControllerBase
     {
         private readonly IMembersService _membersService;
@@ -20,10 +21,11 @@ namespace ProgrammingClubAPI.Controllers
         {
             _membersService = membersService;
         }
+        #region Implement Versioning By Method
 
         // GET: api/<MembersController>
         [HttpGet]
-        [Authorize(Roles = "Admin,Member")]
+        [MapToApiVersion("1.0")]
         public async Task<IActionResult> Get()
         {
             try
@@ -41,6 +43,34 @@ namespace ProgrammingClubAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet]
+        [MapToApiVersion("2.0")]
+        public async Task<IActionResult> GetV2()
+        {
+            try
+            {
+                var members = await _membersService.GetAllMembersAsync();
+                if (members.Count() <= 0)
+                {
+                    //return NotFound("No members found.");
+                    return StatusCode((int)HttpStatusCode.OK, ErrorMessagesEnum.NoMembersFound);
+                }
+                return Ok("Return V2");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        #endregion
+
+
+
+
+
+
+
 
         // GET api/<MembersController>/5
         [HttpGet("{id}")]
@@ -62,7 +92,7 @@ namespace ProgrammingClubAPI.Controllers
 
         // POST api/<MembersController>
         [HttpPost]
-        [Authorize(Roles = "Admin,Member")]
+       // [Authorize(Roles = "Admin,Member")]
         public async Task<IActionResult> Post([FromBody] Member member)
         {
             try

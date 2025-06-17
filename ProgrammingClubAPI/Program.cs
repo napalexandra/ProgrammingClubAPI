@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using ProgrammingClubAPI.DataContext;
+using ProgrammingClubAPI.Helpers;
 using ProgrammingClubAPI.Repositories;
 using ProgrammingClubAPI.Services;
 
@@ -14,13 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    //Metadata for Swagger documentation
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title = "Programming Club API",
-        Version = "v1",
-        Description = "First API - with authentication from scratch"
-    });
+
     //Our API is using JWT authentication.
     options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
@@ -95,13 +91,38 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddApiVersioning(options =>
+{
+    options.ReportApiVersions = true; // Allows clients to see the API versions
+    options.AssumeDefaultVersionWhenUnspecified = true; // Default version if not specified
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0); // Default version
+});
+
+builder.Services.AddVersionedApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV"; // Format for versioned API groups
+    options.SubstituteApiVersionInUrl = true; // Substitute version in URL
+});
+
+builder.Services.ConfigureOptions<ConfigureSwagger>();
+
 var app = builder.Build();
+
+//
+var versionDescriptionsProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        foreach (var item in versionDescriptionsProvider.ApiVersionDescriptions)
+
+        {
+            options.SwaggerEndpoint($"/swagger/{item.GroupName}/swagger.json", item.GroupName.ToUpperInvariant());
+        }
+    });
 }
 
 app.UseHttpsRedirection();

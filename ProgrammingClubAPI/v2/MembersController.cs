@@ -9,7 +9,7 @@ using System.Net;
 
 namespace ProgrammingClubAPI.v2
 {
-    [Route("api/v2/[controller]")]
+    [Route("api/v4/[controller]")]
     [ApiController]
     public class MembersController : ControllerBase
     {
