@@ -10,6 +10,7 @@ using System.Net;
 
 namespace ProgrammingClubAPI.Controllers
 {
+    [Route("api/[controller]")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
@@ -92,7 +93,7 @@ namespace ProgrammingClubAPI.Controllers
 
         // POST api/<MembersController>
         [HttpPost]
-       // [Authorize(Roles = "Admin,Member")]
+        // [Authorize(Roles = "Admin,Member")]
         public async Task<IActionResult> Post([FromBody] Member member)
         {
             try
