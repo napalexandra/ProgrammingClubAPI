@@ -106,6 +106,10 @@ builder.Services.AddVersionedApiExplorer(options =>
 
 builder.Services.ConfigureOptions<ConfigureSwagger>();
 
+//inregistram toate handlerele din assembly-ul in care se clasa Program.cs
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+builder.Services.AddMemoryCache();
 var app = builder.Build();
 
 //
