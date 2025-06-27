@@ -26,7 +26,7 @@ namespace ProgrammingClubAPI.UnitTests.Controllers.Integration
             _contextInMemory = DBContextHelper.GetDatabaseContext();
             repository = new MembersRepository(_contextInMemory);
             _membersService = new MembersService(repository, null);
-            _membersController = new MembersController(_membersService);
+            _membersController = new MembersController(_membersService, null);
         }
 
         [Fact]

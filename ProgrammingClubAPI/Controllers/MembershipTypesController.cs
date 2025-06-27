@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgrammingClubAPI.CQRS.Commands;
@@ -20,6 +21,7 @@ namespace ProgrammingClubAPI.Controllers
 
         // GET: api/MembershipTypes
         [HttpGet]
+        [Authorize(Roles = "Admin,Member")]
         public async Task<ActionResult<IEnumerable<MembershipType>>> GetAllMembershipTypes()
         {
             var query = new GetAllMembershipTypesQuery();

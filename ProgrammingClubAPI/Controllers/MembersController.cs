@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProgrammingClubAPI.CQRS.Queries;
 using ProgrammingClubAPI.Helpers;
 using ProgrammingClubAPI.Models;
 using ProgrammingClubAPI.Models.CreateOrUpdateModels;
@@ -18,9 +20,11 @@ namespace ProgrammingClubAPI.Controllers
     public class MembersController : ControllerBase
     {
         private readonly IMembersService _membersService;
-        public MembersController(IMembersService membersService)
+        private readonly IMediator _mediator;
+        public MembersController(IMembersService membersService, IMediator mediator)
         {
             _membersService = membersService;
+            _mediator = mediator;
         }
         #region Implement Versioning By Method
 
@@ -44,6 +48,22 @@ namespace ProgrammingClubAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPagedMembers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var query = new GetAllMembersPagedQuery(pageNumber, pageSize);
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
 
         [HttpGet]
         [MapToApiVersion("2.0")]
