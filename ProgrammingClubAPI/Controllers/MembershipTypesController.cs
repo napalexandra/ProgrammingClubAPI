@@ -24,6 +24,10 @@ namespace ProgrammingClubAPI.Controllers
         [Authorize(Roles = "Admin,Member")]
         public async Task<ActionResult<IEnumerable<MembershipType>>> GetAllMembershipTypes()
         {
+            if(!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized("Invalid token / no token added on the request");
+            }
             var query = new GetAllMembershipTypesQuery();
             var membershipTypes = await _mediator.Send(query);
             return Ok(membershipTypes);

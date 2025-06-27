@@ -1,0 +1,17 @@
+﻿C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\Controllers\AuthenticationController.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\DataContext\ProgrammingClubAuthDataContext.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\Models\AuthenticationDTOs\LoginRequestDto.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\Models\AuthenticationDTOs\RegisterRequestDto.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\Program.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\Services\ITokenService.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\Services\TokenService.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\obj\Debug\net8.0\AuthenticationAPI.GlobalUsings.g.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\obj\Debug\net8.0\AuthenticationAPI.AssemblyInfo.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\obj\Debug\net8.0\AuthenticationAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\appsettings.Development.json
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\appsettings.json
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\AuthenticationAPI.http
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\Dockerfile
+C:\Users\Ale\source\repos\ProgrammingClubAPI\AuthenticationAPI\Properties\launchSettings.json
+C:\Users\Ale\source\repos\ProgrammingClubAPI\.dockerignore

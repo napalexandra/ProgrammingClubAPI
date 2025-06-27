@@ -46,25 +46,26 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<ProgrammingClubDataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<ProgrammingClubAuthDataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionAuth")));
+//builder.Services.AddDbContext<ProgrammingClubAuthDataContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionAuth")));
 
 //Transient = de fiecare data cand se cere o instanta a clasei, se va crea una noua
 //Scoped = se va crea o instanta a clasei pentru fiecare request HTTP
 builder.Services.AddTransient<IMembersRepository, MembersRepository>();
 builder.Services.AddTransient<IMembersService, MembersService>();
-builder.Services.AddTransient<ITokenService, TokenService>();
+
+//builder.Services.AddTransient<ITokenService, TokenService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Logging.AddLog4Net("log4net.config");
 
 //configurare infrastructura pentru gestionare useri 
-builder.Services.AddIdentityCore<IdentityUser>()
-    .AddRoles<IdentityRole>()
-    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("ProgrammingClubAuthentication")
-    .AddEntityFrameworkStores<ProgrammingClubAuthDataContext>()
-    .AddDefaultTokenProviders();
+//builder.Services.AddIdentityCore<IdentityUser>()
+//    .AddRoles<IdentityRole>()
+//    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("ProgrammingClubAuthentication")
+//    .AddEntityFrameworkStores<ProgrammingClubAuthDataContext>()
+//    .AddDefaultTokenProviders();
 
 //reguli validare pass
 builder.Services.Configure<IdentityOptions>(options =>
@@ -89,6 +90,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
+        options.Events = new JwtBearerEvents
+        {
+            OnChallenge = async context =>
+           {
+               context.HandleResponse();
+               context.Response.StatusCode = StatusCodes.Status401Unauthorized; // Unauthorized
+               var payload = new
+               {
+                   StatusCode = context.Response.StatusCode,
+                   Message = "You are not authorized to access this resource. Please provide a valid token."
+               };
+               await context.Response.WriteAsJsonAsync(payload);
+           },
+
+            OnAuthenticationFailed = async context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized; // Unauthorized
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    StatusCode = context.Response.StatusCode,
+                    Message = "Authentication failed. Please check your token."
+                });
+            }
+        };
     });
 
 builder.Services.AddApiVersioning(options =>
@@ -110,7 +135,11 @@ builder.Services.ConfigureOptions<ConfigureSwagger>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 builder.Services.AddMemoryCache();
+
 var app = builder.Build();
+
+//orice cerere HTTP pe care o facem va trece prin clasa middleware
+app.UseMiddleware<ProgrammingClubAPI.Middleware.CorrelationMiddleware>();
 
 //
 var versionDescriptionsProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
