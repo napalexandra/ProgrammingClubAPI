@@ -25,8 +25,13 @@ namespace ProgrammingClubAPI.CQRS.Handlers
                 SubscriptionLengthInMonths = request.Dto.SubscriptionLengthInMonths
             };
 
+            if (string.IsNullOrEmpty(request.Dto.Name))
+            {
+                throw new Exception("Name required");
+            }
+
             _context.MembershipTypes.Add(membershipType);
-            await _context.SaveChangesAsync(cancellationToken);
+            _context.SaveChangesAsync(cancellationToken);
             return membershipType.IdMembershipType;
         }
     }

@@ -183,17 +183,22 @@ namespace ProgrammingClubAPI.Controllers
 
 
         // DELETE api/<MembersController>/5
-        [HttpDelete("{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
                 var result = await _membersService.DeleteMemberAsync(id);
+                if (result == null)
+                {
+                    return StatusCode((int)HttpStatusCode.NoContent, ErrorMessagesEnum.MemberNotFound);
+                }
                 return StatusCode((int)HttpStatusCode.OK, SuccessMessagesEnum.MemberRemoved);
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }

@@ -51,9 +51,8 @@ builder.Services.AddDbContext<ProgrammingClubDataContext>(options =>
 
 //Transient = de fiecare data cand se cere o instanta a clasei, se va crea una noua
 //Scoped = se va crea o instanta a clasei pentru fiecare request HTTP
-builder.Services.AddTransient<IMembersRepository, MembersRepository>();
+builder.Services.AddSingleton<IMembersRepository, MembersRepository>();
 builder.Services.AddTransient<IMembersService, MembersService>();
-
 //builder.Services.AddTransient<ITokenService, TokenService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

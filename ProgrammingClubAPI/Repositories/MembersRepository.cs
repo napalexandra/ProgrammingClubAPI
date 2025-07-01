@@ -75,11 +75,6 @@ namespace ProgrammingClubAPI.Repositories
 
         public async Task<bool> DeleteMemberAsync(Guid id)
         {
-            if (!await MemberExistsAsync(id))
-            {
-                return false;
-            }
-
             _context.Members.Remove(new Member { IdMember = id });
             await _context.SaveChangesAsync();
             return true;

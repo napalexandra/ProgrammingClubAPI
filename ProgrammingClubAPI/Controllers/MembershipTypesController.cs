@@ -37,11 +37,11 @@ namespace ProgrammingClubAPI.Controllers
         public async Task<ActionResult<MembershipType>> GetMembershipTypeById(Guid id)
         {
             var query = new GetMembershipTypeByIdQuery(id);
-            var membershipType = await _mediator.Send(query);
+            var membershipType =  _mediator.Send(query);
 
             if (membershipType == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             return Ok(membershipType);
         }
